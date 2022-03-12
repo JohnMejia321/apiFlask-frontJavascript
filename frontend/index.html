@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Gestión clientes</title>
+</head>
+<body>
+
+    <h1>Gestion Clientes</h1>
+
+    <nav id='menu'>
+        <input type='checkbox' id='responsive-menu' onclick='updatemenu()'><label></label>
+        <ul>
+          <li><a href='http://'>Home</a></li>
+          <li><a class='dropdown-arrow' href='http://'>Products</a>
+            <ul class='sub-menus'>
+              <li><a href='http://'>Products Sub Menu 1</a></li>
+              <li><a href='http://'>Products Sub Menu 2</a></li>
+              <li><a href='http://'>Products Sub Menu 3</a></li>
+              <li><a href='http://'>Products Sub Menu 4</a></li>
+            </ul>
+          </li>
+          <li><a href='http://'>About</a></li>
+          <li><a class='dropdown-arrow' href='http://'>Services</a>
+            <ul class='sub-menus'>
+              <li><a href='http://'>Services Sub Menu 1</a></li>
+              <li><a href='http://'>Services Sub Menu 2</a></li>
+              <li><a href='http://'>Services Sub Menu 3</a></li>
+            </ul>
+          </li>
+          <li><a href='http://'>Contact Us</a></li>
+        </ul>
+      </nav>
+
+      <br>
+
+
+      <button onClick="agregarCliente()" class="button">Agregar cliente</button>
+
+
+    <table id="customers">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+      
+        <tbody>
+
+            <tr>
+                <td>John</td>
+                <td>Mejia</td>
+                <td>john.mejias@udea.edu.co</td>
+                <td>3014592166</td>
+                <td><button class="button">editar</button>
+                <button class="button">eliminar</button></td>
+
+              </tr>
+
+              <tr>
+                <td>Benito</td>
+                <td>Camelo</td>
+                <td>benito.camelo@udea.edu.co</td>
+                <td>3014592166</td>
+                <td><button class="button">editar</button>
+                    <button class="button">eliminar</button></td>
+              </tr>
+
+              <tr>
+                <td>John</td>
+                <td>Mejia</td>
+                <td>john.mejias@udea.edu.co</td>
+                <td>3014592166</td>
+                <td><button class="button">editar</button>
+                    <button class="button">eliminar</button></td>
+
+              </tr>
+      
+        </tbody>
+      
+      </table>
+
+
+      <div id="modal" class="modale" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h2>Gestionar cliente</h2>
+            <a href="#" onclick="cerrarModal()"  class="btn-close closemodale" aria-hidden="true">&times;</a>
+          </div>
+          <div class="modal-body">
+            <input type="text" name="nombre" placeholder="Nombre" size="20" /><br>
+            <input type="text" name="apellido" placeholder="Apellido" size="20" /><br>
+            <input type="text" name="email" placeholder="Email" size="20" /><br>
+            <input type="text" name="telefono" placeholder="Telefono" size="20" /><br>
+          <div class="modal-footer">
+        
+      
+            <a href="#" class="btn" id="btn_ingresar">Guardar</a>
+          </div>
+        </div>
+      </div>
+      <!-- /Modal -->
+      
+
+
+      <script>
+     
+        function agregarCliente(){
+         htmlModal=document.getElementById("modal")
+         htmlModal.setAttribute("class","modal opened")
+        }
+
+        function cerrarModal(){
+          htmlModal=document.getElementById("modal")
+          htmlModal.setAttribute("class","modale")
+         }
+     
+
+
+      </script>
+      
+
+     
+
+     
+    
+</body>
+</html>
