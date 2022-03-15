@@ -1,23 +1,21 @@
 from flask import Flask, render_template, jsonify, request
-from flask_mysqldb import MySQL
+import sqlite3
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 cors=CORS(app)
 
-app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'system'
-mysql = MySQL(app)
+def get_db_connection():
+    conn = sqlite3.connect('system.db')
+    return conn
 
 @app.route('/api/customers')
 @cross_origin()
 def getAllCustomers():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT id, firstname, lastname, email, phone, address FROM customers')
-    data = cur.fetchall()
+    conexion=get_db_connection()
+    cursor=conexion.cursor()
+    cursor.execute('SELECT id, firstname, lastname, email, phone, address FROM customers')
+    data = cursor.fetchall()
     result = []
     for row in data:
         content = {
@@ -34,9 +32,10 @@ def getAllCustomers():
 @app.route('/api/customers/<int:id>')
 @cross_origin()
 def getCustomer(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT id, firstname, lastname, email, phone, address FROM customers WHERE id= ' + str(id))
-    data = cur.fetchall()
+    conexion=get_db_connection()
+    cursor=conexion.cursor()
+    cursor.execute('SELECT id, firstname, lastname, email, phone, address FROM customers WHERE id= ' + str(id))
+    data = cursor.fetchall()
     content = {}
     for row in data:
         content = {
@@ -51,28 +50,31 @@ def getCustomer(id):
    
 @app.route("/api/customers", methods=["POST"])
 def saveCustomer():
-    cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO `customers` (`id`, `firstname`, `lastname`, `email`, `phone`, `address`) VALUES (NULL, %s, %s, %s, %s, %s);",
+    conexion=get_db_connection()
+    cursor = conexion.cursor()
+    cursor.execute("INSERT INTO `customers` (`id`, `firstname`, `lastname`, `email`, `phone`, `address`) VALUES (NULL, ?, ?, ?, ?, ?);",
             (request.json['firstname'], request.json['lastname'], request.json['email'], request.json['phone'], request.json['address']))
-    mysql.connection.commit()
+    conexion.commit()
     return "Cliente guardado"
 
 
 @app.route("/api/customers", methods=["PUT"])
 @cross_origin()
 def updateCustomer():
-    cur = mysql.connection.cursor()
-    cur.execute("UPDATE `customers` SET `firstname` = %s, `lastname` = %s, `email` = %s, `phone` = %s, `address` = %s WHERE `customers`.`id` = %s;",
+    conexion=get_db_connection()
+    cursor = conexion.cursor()
+    cursor.execute("UPDATE `customers` SET `firstname` = ?, `lastname` = ?, `email` = ?, `phone` = ?, `address` = ? WHERE `customers`.`id` = ?;",
                 (request.json['firstname'], request.json['lastname'], request.json['email'], request.json['phone'], request.json['address'], request.json['id']))
-    mysql.connection.commit()
-    return "Cliente guardado"
+    conexion.commit()
+    return "Cliente actualizado"
 
 @app.route('/api/customers/<int:id>', methods=['DELETE'])
 @cross_origin()
 def removeCustomer(id):
-    cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM `customers` WHERE `customers`.`id` = " + str(id))
-    mysql.connection.commit()
+    conexion=get_db_connection()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM `customers` WHERE `customers`.`id` = " + str(id))
+    conexion.commit()
     return "Cliente eliminado"
 
 @app.route('/')
